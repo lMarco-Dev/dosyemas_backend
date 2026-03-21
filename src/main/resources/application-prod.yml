@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    #Todo viene del server
+    url: jdbc:mysql://${DB_HOST}:3306/${DB_NAME}?useSSL=true&serverTimezone=UTC
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    # En producción también validamos, no dejamos que Hibernate modifique tablas
+    hibernate:
+      ddl-auto: validate
+    # Apagamos los logs de SQL por rendimiento y seguridad
+    show-sql: false
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION:86400000}
+
+app:
+  frontend-url: ${FRONTEND_URL}
+
+server:
+  port: ${PORT:8080}
