@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface ProductoService {
     List<ProductoResponseDTO> listarActivos();
+    List<ProductoResponseDTO> listarConStockCritico();
     ProductoResponseDTO buscarPorId(Integer id);
     ProductoResponseDTO crear(ProductoRequestDTO dto);
     ProductoResponseDTO actualizar(Integer id, ProductoRequestDTO dto);

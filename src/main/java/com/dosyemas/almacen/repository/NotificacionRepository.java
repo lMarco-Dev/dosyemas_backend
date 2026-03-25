@@ -7,12 +7,12 @@ import java.util.List;
 
 public interface NotificacionRepository extends JpaRepository<Notificacion, Integer> {
 
-    //Obtener notificaciones de un usuario en especifico:
+    // Obtener todas las notificaciones de un usuario
     List<Notificacion> findByUsuarioIdUsuario(Integer idUsuario);
 
-    //Filtrar no leidas
-    List<Notificacion> findByUsuarioIdUsuarioAndLeida(Integer idUsuario, Boolean leida);
+    // Filtrar las no leídas (El método que te está pidiendo el IDE)
+    List<Notificacion> findByUsuarioIdUsuarioAndLeidaFalse(Integer idUsuario);
 
-    // Cantidad - Notificaciones no leidas
+    // Cantidad de notificaciones no leídas (para el badge del dashboard)
     Long countByUsuarioIdUsuarioAndLeidaFalse(Integer idUsuario);
 }

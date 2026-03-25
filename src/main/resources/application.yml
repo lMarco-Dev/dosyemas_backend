@@ -1,10 +1,24 @@
 spring:
   application:
     name: dosyemas_backend
-  profiles:
-    active: ${SPRING_PROFILES_ACTIVE:dev}
+  # profiles:
+  #   active: dev  (LO COMENTAMOS PARA QUE NO BUSQUE OTROS ARCHIVOS)
+
+  # AQUÍ CONFIGURAMOS TU XAMPP (Ajusta el nombre de la BD)
+  datasource:
+    url: jdbc:mysql://localhost:3306/almacen_db?createDatabaseIfNotExist=true
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
 
 server:
   port: 8080

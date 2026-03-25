@@ -10,12 +10,15 @@ import java.util.Optional;
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     // Buscar productos por su estado activo
-    List<Producto> findByActivoTrue(); // Un poco más limpio que pasar el boolean como parámetro
+    List<Producto> findByActivoTrue();
+
+    // Cuenta el total de productos activos
+    Long countByActivoTrue();
 
     // Filtra productos por categoría y estado activo
     List<Producto> findByCategoriaIdCategoriaAndActivoTrue(Integer idCategoria);
 
-    // SOLUCIÓN PARA EL STOCK: Compara las dos columnas directamente usando JPQL
+    // Compara las dos columnas directamente usando JPQL para alertas de stock
     @Query("SELECT p FROM Producto p WHERE p.stockActual <= p.stockMinimo AND p.activo = true")
     List<Producto> findProductosConStockCritico();
 

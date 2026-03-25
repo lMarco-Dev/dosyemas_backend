@@ -32,6 +32,13 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<ProductoResponseDTO> listarConStockCritico() {
+        return productoRepository.findProductosConStockCritico()
+                .stream().map(this::toResponseDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public ProductoResponseDTO buscarPorId(Integer id) {
         return productoRepository.findById(id)
                 .map(this::toResponseDTO)
