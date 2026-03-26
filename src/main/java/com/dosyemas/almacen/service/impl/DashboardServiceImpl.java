@@ -27,16 +27,21 @@ public class DashboardServiceImpl implements DashboardService {
     @Transactional(readOnly = true)
     public DashboardResponseDTO obtenerResumen(Integer idUsuario) {
 
-        // 1. Obtener métricas rápidas
-        long totalProductos = productoRepository.findByActivoTrue().size();
-        long movimientosHoy = movimientoRepository.findMovimientosDeHoy().size();
+        long totalProductos = productoRepository.countByActivoTrue();
+
         long notificacionesNoLeidas = notificacionRepository.countByUsuarioIdUsuarioAndLeidaFalse(idUsuario);
 
-        // 2. Obtener listas para el dashboard
-        List<MovimientoResponseDTO> ultimosMovimientos = movimientoRepository.findMovimientosDeHoy()
-                .stream().limit(5).map(this::mapMovimiento).collect(Collectors.toList());
+        List<Movimiento> movimientosDeHoy = movimientoRepository.findMovimientosDeHoy();
+        long movimientosHoy = movimientosDeHoy.size(); // Contamos la lista que ya está en memoria
 
-        // Reutilizamos la query JPQL que creaste en la Fase 1
+        // Reutilizamos la misma lista para sacar los 5 últimos sin volver a consultar a la BD
+        List<MovimientoResponseDTO> ultimosMovimientos = movimientosDeHoy
+                .stream()
+                .limit(5)
+                .map(this::mapMovimiento)
+                .collect(Collectors.toList());
+
+        // Reutilizamos la query JPQL para productos críticos
         List<ProductoResponseDTO> itemsCriticos = productoRepository.findProductosConStockCritico()
                 .stream().map(p -> ProductoResponseDTO.builder()
                         .idProducto(p.getIdProducto())
@@ -47,7 +52,7 @@ public class DashboardServiceImpl implements DashboardService {
                         .build())
                 .collect(Collectors.toList());
 
-        // 3. Ensamblar la respuesta
+        // Ensamblar la respuesta
         return DashboardResponseDTO.builder()
                 .totalProductosActivos(totalProductos)
                 .movimientosHoy(movimientosHoy)
